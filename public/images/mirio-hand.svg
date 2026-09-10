@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 320" width="160" height="320" fill="none">
+  <!-- Mechanical Extension Cable / Segment Links -->
+  <g class="robot-arm-segment">
+    <!-- Top Mounting Ring -->
+    <rect x="68" y="0" width="24" height="12" rx="4" fill="#0A2A20" stroke="#00E699" stroke-width="2"/>
+    <circle cx="80" cy="6" r="3" fill="#00E699"/>
+
+    <!-- Segment Link 1 -->
+    <rect x="72" y="10" width="16" height="35" rx="8" fill="#143A2E" stroke="#00E699" stroke-width="2"/>
+    <circle cx="80" cy="27" r="4" fill="#00FFA6"/>
+
+    <!-- Joint 1 -->
+    <circle cx="80" cy="48" r="10" fill="#071D17" stroke="#00E699" stroke-width="2"/>
+    <circle cx="80" cy="48" r="5" fill="#00E699"/>
+
+    <!-- Segment Link 2 -->
+    <rect x="70" y="55" width="20" height="45" rx="10" fill="url(#armGradient)" stroke="#00E699" stroke-width="2"/>
+    <line x1="80" y1="60" x2="80" y2="95" stroke="#00FFA6" stroke-width="2" stroke-dasharray="4 2"/>
+
+    <!-- Joint 2 (Wrist Cuff) -->
+    <rect x="64" y="102" width="32" height="18" rx="6" fill="#0E382B" stroke="#00FFA6" stroke-width="2.5"/>
+    <circle cx="80" cy="111" r="4" fill="#00FFA6"/>
+  </g>
+
+  <!-- Mirio's Robotic Hand & Palm Grip -->
+  <g class="robot-hand">
+    <!-- Wrist Base -->
+    <path d="M60 120 C 60 115, 100 115, 100 120 L 105 135 C 105 142, 55 142, 55 135 Z" fill="#E6FAF4" stroke="#0A2A20" stroke-width="3"/>
+    
+    <!-- Palm Center -->
+    <rect x="52" y="132" width="56" height="44" rx="18" fill="#FFFFFF" stroke="#0A2A20" stroke-width="3.5"/>
+    <circle cx="80" cy="154" r="12" fill="#0A2A20"/>
+    <circle cx="80" cy="154" r="7" fill="#00E699"/>
+
+    <!-- Left Outer Guard / Cuff Armor -->
+    <path d="M48 138 C 42 145, 42 165, 52 172" fill="none" stroke="#00FFA6" stroke-width="4" stroke-linecap="round"/>
+    <path d="M112 138 C 118 145, 118 165, 108 172" fill="none" stroke="#00FFA6" stroke-width="4" stroke-linecap="round"/>
+
+    <!-- Thumb (Gripping inwards) -->
+    <path d="M48 152 C 32 152, 28 172, 42 180 C 48 184, 56 176, 54 166 Z" fill="#FFFFFF" stroke="#0A2A20" stroke-width="3"/>
+    <circle cx="40" cy="166" r="3" fill="#00E699"/>
+
+    <!-- Finger 1 (Index - Gripping down) -->
+    <rect x="55" y="174" width="12" height="28" rx="6" fill="#FFFFFF" stroke="#0A2A20" stroke-width="3"/>
+    <rect x="57" y="194" width="8" height="6" rx="3" fill="#00E699"/>
+
+    <!-- Finger 2 (Middle - Gripping down) -->
+    <rect x="74" y="176" width="12" height="32" rx="6" fill="#FFFFFF" stroke="#0A2A20" stroke-width="3"/>
+    <rect x="76" y="198" width="8" height="7" rx="3.5" fill="#00E699"/>
+
+    <!-- Finger 3 (Ring - Gripping down) -->
+    <rect x="93" y="174" width="12" height="28" rx="6" fill="#FFFFFF" stroke="#0A2A20" stroke-width="3"/>
+    <rect x="95" y="194" width="8" height="6" rx="3" fill="#00E699"/>
+
+    <!-- Energy Glow Pulses on Fingers -->
+    <circle cx="61" cy="182" r="2" fill="#0A2A20"/>
+    <circle cx="80" cy="184" r="2" fill="#0A2A20"/>
+    <circle cx="99" cy="182" r="2" fill="#0A2A20"/>
+  </g>
+
+  <!-- Grabbing Pull Effect / Energy Waves -->
+  <path d="M35 208 C 60 218, 100 218, 125 208" stroke="#00FFA6" stroke-width="3" stroke-linecap="round" opacity="0.8" stroke-dasharray="6 4"/>
+
+  <defs>
+    <linearGradient id="armGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0E2D23"/>
+      <stop offset="50%" stop-color="#00FFA6"/>
+      <stop offset="100%" stop-color="#071913"/>
+    </linearGradient>
+  </defs>
+</svg>

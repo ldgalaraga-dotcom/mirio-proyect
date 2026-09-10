@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+/* ============================================ */
+/* RESPONSIVE FOUNDATION                        */
+/* ============================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+html, body, #__nuxt {
+  height: 100%;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  background: #0A1310;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Prevent horizontal overflow on all pages */
+#__nuxt {
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(52, 211, 153, 0.35);
+}
+
+/* Responsive images and media */
+img, video, svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* thin, subtle scrollbar to match the dark aesthetic */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0A1310;
+}
+::-webkit-scrollbar-thumb {
+  background: #1E332C;
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2A4239;
+}
+
+/* On mobile, use thinner scrollbars */
+@media (max-width: 600px) {
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+}
+
+.text-balance {
+  text-wrap: balance;
+}
