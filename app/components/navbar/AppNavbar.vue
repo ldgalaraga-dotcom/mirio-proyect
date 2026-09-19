@@ -26,6 +26,42 @@
           <span class="python-nav-badge">Activo</span>
         </div>
 
+        <!-- User Pill (when authenticated) -->
+        <div
+          v-if="auth.isAuthenticated.value"
+          class="user-nav-pill d-none d-sm-flex align-center ga-2 px-3 py-1 cursor-pointer"
+          @click="toggleMenu"
+        >
+          <v-avatar size="28" class="user-pill-avatar">
+            <v-img
+              v-if="auth.user.value?.avatar"
+              :src="auth.user.value.avatar"
+              :alt="auth.user.value.name"
+              cover
+            />
+            <span v-else class="user-pill-initials">{{ userInitials }}</span>
+          </v-avatar>
+          <span class="user-pill-name">{{ firstName }}</span>
+          <v-icon icon="mdi-chevron-down" size="16" color="#34D399" />
+        </div>
+
+        <!-- Login Button (when guest) -->
+        <NuxtLink
+          v-else
+          to="/login"
+          class="text-decoration-none d-none d-sm-inline-flex"
+        >
+          <v-btn
+            variant="outlined"
+            rounded="lg"
+            size="small"
+            class="nav-login-btn text-none"
+            prepend-icon="mdi-login"
+          >
+            Iniciar Sesión
+          </v-btn>
+        </NuxtLink>
+
         <!-- Notification Button -->
         <v-btn icon variant="flat" :class="['icon-btn', { 'python-btn': isPythonCourse }]" aria-label="Notificaciones">
           <v-badge :color="isPythonCourse ? '#FFD43B' : '#00E699'" dot location="top end" offset-x="4" offset-y="4">
@@ -63,11 +99,36 @@
           <!-- Mirio Mascot Header Banner -->
           <div class="mirio-menu-header d-flex align-center ga-3 px-4 py-3 mb-4">
             <v-avatar size="44" class="mascot-avatar">
-              <v-img :src="isPythonCourse ? '/images/python/mirio-face-happy.png' : '/images/mirio-mascot.png'" alt="Mirio Mascot" cover />
+              <v-img
+                v-if="auth.isAuthenticated.value && auth.user.value?.avatar"
+                :src="auth.user.value.avatar"
+                :alt="auth.user.value.name"
+                cover
+              />
+              <v-img
+                v-else-if="isPythonCourse"
+                src="/images/python/mirio-face-happy.png"
+                alt="Mirio Mascot"
+                cover
+              />
+              <v-img
+                v-else
+                src="/images/mirio-mascot.png"
+                alt="Mirio Mascot"
+                cover
+              />
             </v-avatar>
-            <div class="flex-grow-1">
-              <div class="mascot-greeting">{{ isPythonCourse ? '¡Hola, Pythonista! 🐍' : '¡Hola, Desarrollador! 👋' }}</div>
-              <div class="mascot-bubble-text">{{ isPythonCourse ? 'Mirio 2 te acompaña en Python' : '¿A dónde quieres ir hoy?' }}</div>
+            <div class="flex-grow-1 text-truncate">
+              <div class="mascot-greeting text-truncate">
+                <template v-if="auth.isAuthenticated.value">¡Hola, {{ firstName }}! 👋</template>
+                <template v-else-if="isPythonCourse">¡Hola, Pythonista! 🐍</template>
+                <template v-else>¡Hola, Desarrollador! 👋</template>
+              </div>
+              <div class="mascot-bubble-text text-truncate">
+                <template v-if="auth.isAuthenticated.value">{{ auth.user.value?.email }}</template>
+                <template v-else-if="isPythonCourse">Mirio 2 te acompaña en Python</template>
+                <template v-else>¿A dónde quieres ir hoy?</template>
+              </div>
             </div>
             <div class="hand-pull-badge d-none d-sm-flex align-center ga-1">
               <v-icon icon="mdi-gesture-swipe-down" size="16" :color="isPythonCourse ? '#38BDF8' : '#00E699'" />
@@ -98,6 +159,36 @@
             </NuxtLink>
           </div>
 
+          <!-- Menu Auth Action (Logout if logged in, Login if guest) -->
+          <div class="menu-auth-action mt-3 pt-2">
+            <v-btn
+              v-if="auth.isAuthenticated.value"
+              variant="tonal"
+              color="#EF4444"
+              class="logout-btn text-none font-weight-bold"
+              prepend-icon="mdi-logout"
+              block
+              rounded="lg"
+              size="small"
+              @click="handleLogout"
+            >
+              Cerrar Sesión
+            </v-btn>
+            <NuxtLink v-else to="/login" class="text-decoration-none" @click="closeMenu">
+              <v-btn
+                variant="flat"
+                color="#00E699"
+                class="login-menu-btn text-none font-weight-bold text-black"
+                prepend-icon="mdi-login"
+                block
+                rounded="lg"
+                size="small"
+              >
+                Iniciar Sesión
+              </v-btn>
+            </NuxtLink>
+          </div>
+
           <!-- Bottom Footer Helper Bar -->
           <div class="menu-footer mt-4 pt-3 d-flex align-center justify-space-between">
             <div class="d-flex align-center ga-2 text-caption text-grey-lighten-1">
@@ -124,9 +215,25 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 
+const auth = useAuth()
 const route = useRoute()
 const isPythonCourse = computed(() => {
   return route.path.includes('/cursos/python')
+})
+
+const firstName = computed(() => {
+  if (!auth.user.value?.name) return 'Usuario'
+  return auth.user.value.name.split(' ')[0]
+})
+
+const userInitials = computed(() => {
+  if (!auth.user.value?.name) return 'U'
+  return auth.user.value.name
+    .split(' ')
+    .map((n) => n[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2)
 })
 
 const isMenuOpen = ref(false)
@@ -148,6 +255,12 @@ const closeMenu = () => {
     isMenuOpen.value = false
     isRetracting.value = false
   }, 350)
+}
+
+const handleLogout = () => {
+  auth.logout()
+  closeMenu()
+  navigateTo('/login')
 }
 
 // 7 EXPLICITLY REQUESTED MENU ITEMS
@@ -244,6 +357,84 @@ const menuItems = [
   border: 1px solid rgba(56, 189, 248, 0.4);
   border-radius: 20px;
   box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+}
+
+/* ===== USER AUTH NAVBAR STYLES ===== */
+.user-nav-pill {
+  background: rgba(13, 38, 30, 0.85);
+  border: 1.5px solid rgba(52, 211, 153, 0.3);
+  border-radius: 20px;
+  box-shadow: 0 0 15px rgba(52, 211, 153, 0.15);
+  transition: all 0.25s ease;
+}
+
+.user-nav-pill:hover {
+  border-color: #34D399;
+  background: rgba(19, 56, 44, 0.95);
+  box-shadow: 0 0 20px rgba(52, 211, 153, 0.3);
+}
+
+.user-pill-avatar {
+  border: 1.5px solid #34D399;
+}
+
+.user-pill-initials {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #34D399;
+  background: rgba(52, 211, 153, 0.15);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-pill-name {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #E7EDEA;
+  max-width: 110px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nav-login-btn {
+  border-color: rgba(52, 211, 153, 0.4) !important;
+  color: #34D399 !important;
+  background: rgba(52, 211, 153, 0.08) !important;
+  font-weight: 700 !important;
+  font-size: 0.82rem !important;
+  letter-spacing: 0.02em !important;
+  transition: all 0.25s ease !important;
+}
+
+.nav-login-btn:hover {
+  border-color: #34D399 !important;
+  background: rgba(52, 211, 153, 0.18) !important;
+  box-shadow: 0 0 16px rgba(52, 211, 153, 0.3) !important;
+  transform: translateY(-1px);
+}
+
+.menu-auth-action {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.logout-btn {
+  background: rgba(239, 68, 68, 0.1) !important;
+  border: 1px solid rgba(239, 68, 68, 0.25) !important;
+  transition: all 0.25s ease !important;
+}
+
+.logout-btn:hover {
+  background: rgba(239, 68, 68, 0.2) !important;
+  border-color: #EF4444 !important;
+}
+
+.login-menu-btn {
+  background: linear-gradient(135deg, #059669 0%, #34D399 100%) !important;
+  box-shadow: 0 4px 14px rgba(52, 211, 153, 0.3) !important;
 }
 
 .python-nav-icon {

@@ -5,6 +5,18 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
 
+  runtimeConfig: {
+    public: {
+      googleClientId: process.env.NUXT_PUBLIC_GOOGLE_CLIENT_ID || process.env.GOOGLE_CLIENT_ID || '54029945057-va1sk53lqt9urs1h306ad3f3r4ejtq2u.apps.googleusercontent.com',
+    },
+  },
+
+  components: {
+    dirs: [
+      { path: '~/components', pathPrefix: false },
+    ],
+  },
+
   css: [
     'vuetify/styles',
     '@mdi/font/css/materialdesignicons.css',
@@ -15,11 +27,6 @@ export default defineNuxtConfig({
     transpile: ['vuetify'],
   },
 
-  typescript: {
-    tsConfig: {
-      extends: './.nuxt/tsconfig.json'
-    }
-  },
 
   vite: {
     // @ts-expect-error - tsconfigRaw override for oxc in vite
@@ -49,4 +56,5 @@ export default defineNuxtConfig({
       ],
     },
   },
+  // Nuxt configuration reload trigger
 })
